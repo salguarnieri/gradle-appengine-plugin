@@ -15,31 +15,14 @@
  */
 package com.google.gcloud.task
 
-import com.google.gcloud.wrapper.GCloudCommandBuilder
 import org.gradle.api.Incubating
+import org.gradle.api.tasks.Input
 
 /**
- * Task to Deploy App Engine projects
+ * GCloud task is never exposed, but users can override it if they so please
  */
 @Incubating
-class GCloudAppDeployTask extends GCloudTask {
-
-    GCloudAppDeployTask() {
-        commandBuilder = new GCloudCommandBuilder("preview", "app", "run")
-        project.afterEvaluate {
-            // defer till everything is resolved (but before task execution)
-            addCommonOpts()
-            addAppDir()
-        }
-    }
-
-    @Override
-    protected String[] getCommand() {
-        return super.getCommand();
-    }
-
-    @Override
-    void command(String[] command) {
-        throw new UnsupportedOperationException("Cannot assign command for App Deploy Task")
-    }
+class RawGCloudTask extends AbstractGCloudTask {
+    @Input
+    String[] command
 }

@@ -1,7 +1,20 @@
+/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.google.gcloud
 
-import com.google.gcloud.task.GCloudAppDeployExtension
-import com.google.gcloud.task.GCloudAppRunExtension
 import org.gradle.api.Incubating
 import org.gradle.api.Project
 
@@ -13,20 +26,8 @@ class GCloudPluginExtension {
     private final Project gradleProject // to differentiate from gcloud project
     String gcloudHome
     String project
-    String verbosity
-    List<String> externalModules; //TODO : non java module directories
-    GCloudAppDeployExtension app = new GCloudAppDeployExtension()
-    GCloudAppRunExtension run = new GCloudAppRunExtension()
 
     public GCloudPluginExtension(Project project) {
         this.gradleProject = project;
-    }
-
-    void app(Closure closure) {
-        gradleProject.configure(app, closure)
-    }
-
-    void run(Closure closure) {
-        gradleProject.configure(run, closure)
     }
 }

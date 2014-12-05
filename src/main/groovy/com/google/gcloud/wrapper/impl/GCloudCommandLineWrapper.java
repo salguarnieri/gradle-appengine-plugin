@@ -71,10 +71,12 @@ public class GCloudCommandLineWrapper extends GCloud {
             pb.directory(gcloudHome);
         }
         if (logFile != null) {
+            pb.redirectInput();
             pb.redirectErrorStream(true);
             pb.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile));
         }
         else {
+            // TODO : when running in daemon mode, stdout goes to the daemon log, not the screen
             pb.inheritIO();
         }
 

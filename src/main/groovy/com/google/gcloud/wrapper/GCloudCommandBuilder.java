@@ -38,24 +38,34 @@ public class GCloudCommandBuilder {
 
     /**
      * Convenience method to add non-null values as options to a gcloud command
-     * in the format "--optionName=value", does not escape special characters
+     * in the format "--optionName=value", does NOT escape special characters
      */
     public GCloudCommandBuilder addOption(String optionName, String value) {
-        if (optionName != null && optionName.trim().length() != 0
-                && value != null && value.trim().length() != 0) {
-            command.add("--" + optionName + "=" + value.trim());
+        if (optionName == null || optionName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name is null or empty");
         }
+        if (optionName.startsWith("--")) {
+            throw new IllegalArgumentException("Do not include -- in option name");
+        }
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("Value is null or empty");
+        }
+        command.add("--" + optionName + "=" + value);
         return this;
     }
 
     /**
-     * Convenience method to add an option if value is true
+     * Convenience method to add an option, does NOT escape special characters
      */
-    public GCloudCommandBuilder addBoolOption(String optionName, Boolean value) {
-        if (optionName != null && optionName.trim().length() != 0
-                && value != null && value) {
-            command.add("--" + optionName);
+    public GCloudCommandBuilder addOption(String optionName) {
+        if (optionName == null || optionName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name is null or empty");
         }
+        if (optionName.startsWith("--")) {
+            throw new IllegalArgumentException("Do not include -- in option name");
+        }
+        command.add("--" + optionName);
         return this;
     }
+
 }
