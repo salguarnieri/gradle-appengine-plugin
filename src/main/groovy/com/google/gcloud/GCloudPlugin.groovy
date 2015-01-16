@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,16 @@
  */
 package com.google.gcloud
 
-import com.google.gcloud.task.GCloudAppDeployTask
-import com.google.gcloud.task.GCloudAppRunTask
-import com.google.gcloud.task.GCloudAppStopTask
-import com.google.gcloud.task.GCloudTask
+import com.google.gcloud.task.app.DeployTask
+import com.google.gcloud.task.app.RunTask
+import com.google.gcloud.task.app.StopTask
+import com.google.gcloud.tooling.GCloudToolingBuilderModel
 import org.gradle.api.Incubating
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
+
+import javax.inject.Inject
 
 /**
  * <p>A {@link Plugin} that provides tasks for generic use of gcloud in gradle and
@@ -36,15 +39,23 @@ public class GCloudPlugin implements Plugin<Project> {
     static final String TASK_GCLOUD_APP_RUN = "gcloudAppRun"
     static final String TASK_GCLOUD_APP_STOP = "gcloudAppStop"
 
+    private final ToolingModelBuilderRegistry registry;
+    @Inject
+    public GCloudPlugin(ToolingModelBuilderRegistry registry) {
+        this.registry = registry;
+    }
+
     @Override
     void apply(Project project) {
 
+        registry.register(new GCloudToolingBuilderModel());
+
         project.apply plugin: "appengine"
 
-        project.extensions.create('gcloud', GCloudPluginExtension, project)
+        project.extensions.create('gcloud', GCloudPluginExtension)
 
-        project.tasks.create(TASK_GCLOUD_APP_DEPLOY, GCloudAppDeployTask)
-        project.tasks.create(TASK_GCLOUD_APP_RUN, GCloudAppRunTask)
-        project.tasks.create(TASK_GCLOUD_APP_STOP, GCloudAppStopTask)
+        project.tasks.create(TASK_GCLOUD_APP_DEPLOY, DeployTask)
+        project.tasks.create(TASK_GCLOUD_APP_RUN, RunTask)
+        project.tasks.create(TASK_GCLOUD_APP_STOP, StopTask)
     }
 }

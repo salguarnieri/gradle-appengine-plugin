@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.gcloud.task
+package com.google.gcloud.task.app
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
-/**
- * Created by appu on 12/10/14.
- */
-class GCloudAppStopTask extends DefaultTask {
-    int adminPort = 8000;
-    String adminAddress = "localhost";
+class StopTask extends DefaultTask {
+    @Input int adminPort = 8000;
+    @Input String adminAddress = "localhost";
 
     @TaskAction
     protected void stopDevAppServer() {
@@ -38,7 +36,7 @@ class GCloudAppStopTask extends DefaultTask {
             BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))
             while(responseReader.readLine() != null);
             connection.disconnect();
-            logger.info("Shutting down Cloud SDK Server on port " + 8000 + " and waiting 4 seconds...");
+            logger.info("Shutting down Cloud SDK Server on port " + adminPort + " and waiting 4 seconds...");
             Thread.sleep(4000);
         } catch (IOException e) {
             logger.debug("Was not able to contact the server to shut it down.  It may not be running anymore. ", e);

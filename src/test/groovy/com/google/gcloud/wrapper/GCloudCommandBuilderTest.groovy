@@ -1,23 +1,25 @@
 package com.google.gcloud.wrapper
 
+import com.google.gcloud.exec.command.CommandBuilder
 import spock.lang.Specification
 
 /**
  * Command Builder test
  */
 class GCloudCommandBuilderTest extends Specification {
-    GCloudCommandBuilder builder
+    CommandBuilder builder
 
     def setup() {
-        builder = new GCloudCommandBuilder()
+        builder = new CommandBuilder()
     }
 
     def "Test valid command builder"() {
         when:
-        builder.add("gcloud", "test1", "test2")
+        builder.addCommand("gcloud", "test1", "test2")
                 .addOption("bool1")
+                .addArgument("tomato")
                 .addOption("opt1", "value")
-                .add((String[])["tomato", "potato"])
+                .addArgument("potato")
         String[] command = builder.buildCommand()
 
         then:
@@ -36,7 +38,7 @@ class GCloudCommandBuilderTest extends Specification {
         String[] command = []
 
         when: "Create a command"
-        builder.add("test1", "test2")
+        builder.addCommand("test1", "test2")
         command = builder.buildCommand()
 
         then: "Check it"
@@ -58,7 +60,6 @@ class GCloudCommandBuilderTest extends Specification {
         ""    | _
         "   " | _
         null  | _
-        "--o" | _
     }
 
     def "Test bad arguments 2"(String opt, String val) {
@@ -73,12 +74,8 @@ class GCloudCommandBuilderTest extends Specification {
         ""    | "bus"
         "   " | "bus"
         null  | "bus"
-        "bus" | ""
-        "bus" | "   "
-        "bus" | null
         ""    | null
         "   " | ""
         null  | null
-        "--o" | "bus"
     }
 }

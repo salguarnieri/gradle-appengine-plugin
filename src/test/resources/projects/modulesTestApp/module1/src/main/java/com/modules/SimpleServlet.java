@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.gcloud.task
 
-import org.gradle.api.Incubating
-import org.gradle.api.tasks.Input
+package com.modules;
 
-/**
- * GCloud task is never exposed, but users can override it if they so please
- */
-@Incubating
-class RawGCloudTask extends AbstractGCloudTask {
-    @Input
-    String[] command
+import java.io.IOException;
+import javax.servlet.http.*;
+
+public class SimpleServlet extends HttpServlet {
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        resp.setContentType("text/plain");
+        resp.getWriter().println("Hello World!");
+    }
 }

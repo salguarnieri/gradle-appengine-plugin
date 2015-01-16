@@ -1,0 +1,42 @@
+buildscript {
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "com.google.appengine:gradle-appengine-plugin:@@pluginversion@@"
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'com.google.gcloud'
+
+dependencies {
+  appengineSdk "com.google.appengine:appengine-java-sdk:@@version@@"
+  compile "com.google.appengine:appengine-endpoints:@@version@@"
+  compile 'javax.servlet:servlet-api:2.5'
+  compile 'javax.inject:javax.inject:1'
+}
+
+gcloud {
+  project = "some-cloud-project"
+  verbosity = "info"
+}
+
+gcloudAppDeploy {
+  options = [ "goose=moose" ]
+}
+
+task deployTest(type: com.google.gcloud.task.app.DeployTask) {
+  options = [
+    "loosey=goosey",
+    "project=another-cloud-project"
+ ]
+}

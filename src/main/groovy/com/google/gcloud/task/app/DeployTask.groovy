@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,33 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.gcloud.task
+package com.google.gcloud.task.app
 
-import com.google.gcloud.wrapper.GCloudCommandBuilder
 import org.gradle.api.Incubating
 
 /**
  * Task to Deploy App Engine projects
  */
 @Incubating
-class GCloudAppDeployTask extends GCloudTask {
+class DeployTask extends AppTask {
 
-    GCloudAppDeployTask() {
-        commandBuilder = new GCloudCommandBuilder("preview", "app", "run")
-        project.afterEvaluate {
-            // defer till everything is resolved (but before task execution)
-            addCommonOpts()
-            addAppDir()
-        }
+    @Override
+    List<String> getCommand() {
+        ['gcloud','preview','app','deploy']
     }
 
     @Override
-    protected String[] getCommand() {
-        return super.getCommand();
+    void setCommand(List<String> command) {
+        throw new UnsupportedOperationException("Can't set command on Deploy Task")
     }
 
-    @Override
-    void command(String[] command) {
-        throw new UnsupportedOperationException("Cannot assign command for App Deploy Task")
-    }
 }
